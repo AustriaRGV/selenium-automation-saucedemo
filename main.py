@@ -57,13 +57,6 @@ test_cases = [
     {"username": "visual_user", "expected": "success"},
 ]
 
-# RUN TESTS
-for case in test_cases:
-    username = case["username"]
-    expected = case["expected"]
-
-    login(driver, username)
-
 def wait_for_login_result(web_driver, timeout=3):
     local_wait = WebDriverWait(web_driver, timeout)
     return local_wait.until(
@@ -72,6 +65,19 @@ def wait_for_login_result(web_driver, timeout=3):
                     d.find_elements(By.CSS_SELECTOR, "h3[data-test='error']")
             )
         )
+# RUN TESTS
+for case in test_cases:
+    username = case["username"]
+    expected = case["expected"]
+
+    login(driver, username)
+    wait_for_login_result(driver)
+    if "inventory" in driver.current_url:
+        print(f"{username or 'EMPTY'} → SUCCESS")
+        logout(driver, wait)
+    else:
+        print(f"{username or 'EMPTY'} → FAILED")
+
 # RESET FOR NEXT TEST
 driver.get("https://www.saucedemo.com/")
 
