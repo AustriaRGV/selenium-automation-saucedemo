@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import Select
 
 # HANDLE CHROME POPUPS
 chrome_options = Options()
@@ -80,6 +81,56 @@ for case in test_cases:
 
 # RESET FOR NEXT TEST
 driver.get("https://www.saucedemo.com/")
+
+# RELOGGING IN
+login(driver, "standard_user")
+wait_for_login_result(driver)
+
+# SORTING
+dropdown_locator = (By.CLASS_NAME, "product_sort_container")
+
+options = [
+    "Name (A to Z)",
+    "Name (Z to A)",
+    "Price (low to high)",
+    "Price (high to low)"
+]
+for option in options:
+    dropdown = driver.find_element(*dropdown_locator)
+    Select(dropdown).select_by_visible_text(option)
+
+    # Get names
+    items = driver.find_elements(By.CLASS_NAME, "inventory_item_name")
+    names = [item.text for item in items]
+
+    # Get prices
+    prices = driver.find_elements(By.CLASS_NAME, "inventory_item_price")
+    prices = [float(p.text.replace("$", "")) for p in prices]
+
+    result = False
+
+    # Check sorting
+    if option == "Name (A to Z)":
+        result = names == sorted(names)
+
+    elif option == "Name (Z to A)":
+        result = names == sorted(names, reverse=True)
+
+    elif option == "Price (low to high)":
+        result = prices == sorted(prices)
+
+    elif option == "Price (high to low)":
+        result = prices == sorted(prices, reverse=True)
+
+    # Print result
+    print(f"{option} → {'PASS' if result else 'FAIL'}")
+
+# ADDING ITEMS
+driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-backpack").click()
+
+# VERIFY IF ITEMS ARE IN THE CART
+driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
+
 
 # CLOSE BROWSER
 driver.quit()
