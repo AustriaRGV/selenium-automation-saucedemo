@@ -127,9 +127,19 @@ for option in options:
 
 # ADDING ITEMS
 driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-backpack").click()
+driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-bike-light").click()
+driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-bolt-t-shirt").click()
+driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-fleece-jacket").click()
+driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-onesie").click()
+driver.find_element(By.CSS_SELECTOR,r"#add-to-cart-test\.allthethings\(\)-t-shirt-\(red\)").click()
+
 
 # VERIFY IF ITEMS ARE IN THE CART
-driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
+cart = int(driver.find_element(By.CLASS_NAME, "shopping_cart_link").text)
+if cart == 6:
+    print("Passed! All items was successfully added to the cart")
+else:
+    print("Failed! Items are not in the cart")
 
 
 # CLOSE BROWSER
