@@ -141,6 +141,25 @@ if cart == 6:
 else:
     print("Failed! Items are not in the cart")
 
+driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
 
+#Return shopping button in cart
+driver.find_element(By.CSS_SELECTOR, "#continue-shopping").click()
+WebDriverWait(driver, 10).until(
+    ec.url_contains("inventory")
+)
+assert "inventory" in driver.current_url, "Failed!"
+print("Passed! Continue Shopping button working properly")
+
+#Remove items
+driver.find_element(By.CSS_SELECTOR, r"#remove-test\.allthethings\(\)-t-shirt-\(red\)").click()
+
+WebDriverWait(driver, 10).until(
+    ec.invisibility_of_element_located((By.CSS_SELECTOR, r"#remove-test\.allthethings\(\)-t-shirt-\(red\)")
+    )
+)
+items = driver.find_elements(By.CSS_SELECTOR, r"#remove-test\.allthethings\(\)-t-shirt-\(red\)")
+assert len(items) == 0, "Failed! The item was not removed"
+print("Passed! The item was successfully removed")
 # CLOSE BROWSER
 driver.quit()
