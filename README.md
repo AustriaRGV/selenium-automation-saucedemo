@@ -1,11 +1,11 @@
-# **SauceDemo Automation Testing with Selenium (Python)**
+# SauceDemo Automation Testing with Selenium (Python)
 
-## **Overview**
+## Overview
 
 This project contains automated test scripts for SauceDemo
  web application using Selenium WebDriver with Python. The tests cover key functionalities like login, adding/removing items from the cart, and checking out.
  
-## **Technologies & Tools**
+## Technologies & Tools
 - Programming Language: Python 3.x
 - Automation Framework: Selenium WebDriver
 - Browser: Chrome / Firefox (via WebDriver)
